@@ -1,0 +1,31 @@
+Given an integer n, generate a square matrix filled with elements from 1 to n2 in spiral order.
+
+For example,
+Given n = 3,
+
+You should return the following matrix:
+[
+ [ 1, 2, 3 ],
+ [ 8, 9, 4 ],
+ [ 7, 6, 5 ]
+]
+
+class Solution:
+# @return a list of lists of integer
+def generateMatrix(self, n):
+    matrix = [[0]*n for _ in range(n)]
+    directions = ((0, 1), (1, 0), (0, -1), (-1, 0))
+    d = 0
+    y, x = 0, 0
+    for i in range(1, n*n+1):
+        matrix[y][x] = i
+        dy, dx = directions[d % 4]
+        if -1 < y+dy < n and -1 < x+dx < n and matrix[y+dy][x+dx] == 0:
+            y, x = y+dy, x+dx
+        else:
+            d += 1
+            dy, dx = directions[d % 4]
+            y, x = y+dy, x+dx
+    return matrix
+		
+#python可以用tuple(0, 1), (1, 0), (0, -1), (-1, 0)来表示方向，这样以来就不用慢慢地对i,j慢慢加减了
