@@ -1,5 +1,6 @@
-</h>480. Sliding Window Median </h>
-## https://leetcode.com/contest/leetcode-weekly-contest-14/problems/sliding-window-median/
+480. Sliding Window Median 
+
+https://leetcode.com/contest/leetcode-weekly-contest-14/problems/sliding-window-median/
 
 Median is the middle value in an ordered integer list. If the size of the list is even, there is no middle value. So the median is the mean of the two middle value.
 
@@ -25,3 +26,48 @@ Therefore, return the median sliding window as [1,-1,-1,3,5,6].
 
 Note: 
 You may assume k is always valid, ie: 1 ≤ k ≤ input array's size for non-empty array.
+
+一开始我当然用我最原始的方法暴力解，其实也不算暴力就是没生成一个window就sort一次，算了下复杂度有n三次
+
+以下是我的解法：
+class Solution(object):
+    def medianSlidingWindow(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[float]
+        """
+        n = len(nums)
+        res =[]
+        for i in range(n-k+1):
+            s = []
+            for j in range(i,i+k):
+                s.append(nums[j])
+            s.sort()
+            if k % 2 is 0:
+                mean = float(s[k/2] + s[k/2-1]) / 2
+            else:
+                mean = float(s[k/2])
+            res.append(mean)
+        return res
+        
+果不其然，被卡数据了。
+然后discuss上的解答：     https://discuss.leetcode.com/topic/74634/easy-python-o-nk
+
+ class Solution(object):
+   def medianSlidingWindow(self, nums, k):
+       window = sorted(nums[:k])
+       medians = []
+       for a, b in zip(nums, nums[k:] + [0]):
+           medians.append((window[k/2] + window[~(k/2)]) / 2)
+           print a,b
+           window.remove(a)
+           bisect.insort(window, b)
+       return medians
+        
+有两个点值得学习，一个是用了bisect.insort，which is one of the python bulit-in function。。。yixiazidabuliaozhongwen。。
+the complexity of bisection insert in here is just k， which makes the complexity of the whole aglorithm is just kn～
+really fantastic～
+
+
+第二个点就是用了一个叫反位取值符号~的的东西，值得学习，虽然我还是不知道怎么打出来～
