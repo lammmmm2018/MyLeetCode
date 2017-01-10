@@ -1,0 +1,58 @@
+78. Subsets ## https://leetcode.com/problems/subsets/
+
+Given a set of distinct integers, nums, return all possible subsets.
+
+Note: The solution set must not contain duplicate subsets.
+
+For example,
+If nums = [1,2,3], a solution is:
+##一开始思路堵塞，后来就打算用dfs强行解，但到n=10的时候就TLE了，然后发现原来自己思路不好，其实有些步骤可以省去，有太多的重复了
+##乃至于检查nums in num的这个语句跑了太多次，导致超时
+##一下是我的代码（没过
+
+class Solution(object):
+
+    def subsets(self, nums):
+        re = [[]]
+        nums.sort()
+        self.next_(nums, re)
+        return re
+
+    def next_(self, nums, re):
+        if nums:
+            for i in range(len(nums)):
+                self.next_(nums[:i] + nums[i + 1:], re)
+            if not nums in re:
+                re.append(nums)
+#太愚蠢了～
+##一下是Top Solution里面的三个解法：
+
+# DFS recursively 
+def subsets1(self, nums):
+    res = []
+    self.dfs(sorted(nums), 0, [], res)
+    return res
+    
+def dfs(self, nums, index, path, res):
+    res.append(path)
+    for i in xrange(index, len(nums)):
+        self.dfs(nums, i+1, path+[nums[i]], res)
+        
+# Bit Manipulation    
+def subsets2(self, nums):
+    res = []
+    nums.sort()
+    for i in xrange(1<<len(nums)):
+        tmp = []
+        for j in xrange(len(nums)):
+            if i & 1 << j:  # if i >> j & 1:
+                tmp.append(nums[j])
+        res.append(tmp)
+    return res
+    
+# Iteratively
+def subsets(self, nums):
+    res = \[\[\]\]
+    for num in sorted(nums):
+        res += [item+[num] for item in res]
+    return res
