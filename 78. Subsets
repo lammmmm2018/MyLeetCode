@@ -56,3 +56,6 @@ def subsets(self, nums):
     for num in sorted(nums):
         res += [item+[num] for item in res]
     return res
+
+
+对比了一下TS的想法和我自己的想法，发现我用喜欢用数学上抽取的思维来想这个问题，其实应该用添加的思想，用已有状态推导至下一个状态
